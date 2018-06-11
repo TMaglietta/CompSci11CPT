@@ -9,6 +9,7 @@ PImage sans;
 PImage tree = new PImage();
 
 int dialogueT = 1;
+int frame;
 
 int screenState;
 
@@ -139,14 +140,13 @@ void dialogueScreen(){
     textSize(height/20);
     if (key == 't'||key =='T'){
       text("hello!", width/2 - 500, height/2);
-      int tFrame = frameCount;
-      if(frameCount == tFrame + 120){
+    } if(frameCount == frame + 120){
+        frame = frameCount;
         fill(0);
         rect(width/2, 0, width/2, height);
         fill(255);
         text("hey", width/2 + 175, height/2 - 100);
-      }
-  } 
+      } 
     //characters
   image(papyrus, width - 250, height/2, height/3, height/3); 
   image(sans, 0, height/2 + 40, height/3 - 50, height/3 -50);
@@ -192,3 +192,5 @@ void menuScreen() {
     screenState = 1;
   }
 }
+
+  
