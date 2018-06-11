@@ -1,0 +1,194 @@
+//beach
+
+int speed = 7;
+
+PVector sansLoc;
+
+PImage papyrus;
+PImage sans;
+PImage tree = new PImage();
+
+int dialogueT = 1;
+
+int screenState;
+
+void setup() {
+  fullScreen();  
+  background(0);
+  papyrus = loadImage("papyrus.png");    
+  sans = loadImage("sans.png");
+  tree = loadImage("tree.png");
+  frameRate(30);
+  screenState = 0;//menuScreen
+  sansLoc = new PVector(width - 300, height -200);
+  
+}
+
+void draw() {
+  if (screenState == 0){
+    menuScreen();
+  }else if (screenState == 1){
+    mapScreen();
+  }else if (screenState == 2){
+    dialogueScreen();
+  }
+} 
+
+void keyPressed() {
+  if (key == 'w' || key == 'W') {
+    sansLoc.y -= speed;
+  } else if (key == 's' || key == 'S') {
+    sansLoc.y += speed; 
+  } else if (key == 'a' || key == 'A') {
+    sansLoc.x -= speed; 
+  } else if (key == 'd' || key == 'D') {
+    sansLoc.x += speed; 
+  }
+}
+
+void keyReleased() {
+  if (key == 't' || key == 'T') {
+    dialogueT = 0;
+  }
+}
+
+void mapScreen(){
+  background(#fff1c3);
+  textAlign(LEFT);
+  //path
+  
+  stroke(#e8b927);
+  strokeWeight(10);
+  fill(#edc855);
+  rect(225, height/2, width, 150, 15);
+    
+  noStroke();
+  fill(#6fe300);
+  rect(width - 150, -5, 150, height, 7);
+  rect(400, 0, width, 225, 10);
+  ellipse(width - 150, 225, 100, 100);
+  
+  //characters
+  
+  image(papyrus, width - 150, height/2, 100, 100);
+    
+  image(sans, sansLoc.x, sansLoc.y, 75, 75);
+  
+  //water
+  
+  fill(#74ccf4);
+  rect(0, height - 100, width, 100);
+  
+  //trees
+   
+  int numTrees = 18;
+   
+  for (int i = 0; i < numTrees; i++){
+    float x = 225 + 50 * i;
+    float y = -135;
+    image(tree, x, y, 400, 400);   
+  }
+  
+//text box and boundaries
+  
+  if (sansLoc.x >= width - 225) {
+    sansLoc.x = width - 225;
+    fill(0);
+    rect(5, 5, 375, 195, 15);
+    fill(255);
+    textSize(25);
+    text("keep off the grass!", 10, 30);
+  } if (sansLoc.x <= 0) {
+      sansLoc.x = 0;
+  } if (sansLoc.y >= height - 175) {
+    sansLoc.y = height - 175;
+    fill(0);
+    rect(5, 5, 375, 195, 15);
+    textSize(25);
+    fill(255);
+    text("stay out of the water!", 10, 30); 
+  }
+  if (sansLoc.y <= 0) {
+    sansLoc.y = 0;
+  }
+  if (sansLoc.x <= width - 225 && sansLoc.x >= width - 260 && sansLoc.y <= height/2 + 75 && sansLoc.y >= height/2 - 75) {
+     fill(0);
+     rect(5, 5, 375, 195, 15);
+     textSize(25);
+     fill(255);
+     text("speak to Gavin?", 10, 30);
+     text("press space", 10, 55);
+     
+     //dialogue 
+     
+     if (keyPressed && key == ' '){
+        screenState = 2;
+     }
+  }
+}
+void dialogueScreen(){
+  background(0); 
+  textAlign(LEFT);
+  //dialogue
+  
+    fill(255);
+    
+    textSize(height/30);
+    text("press t to speak", 10, 30); 
+      
+    textSize(height/20);
+    if (key == 't'||key =='T'){
+      text("hello!", width/2 - 500, height/2);
+      int tFrame = frameCount;
+      if(frameCount == tFrame + 120){
+        fill(0);
+        rect(width/2, 0, width/2, height);
+        fill(255);
+        text("hey", width/2 + 175, height/2 - 100);
+      }
+  } 
+    //characters
+  image(papyrus, width - 250, height/2, height/3, height/3); 
+  image(sans, 0, height/2 + 40, height/3 - 50, height/3 -50);
+}
+
+void menuScreen() {
+  background(111, 227, 0);
+  noStroke();
+  fill(255, 241, 195);
+  rect(width/2 - 475, height/2 - 100, width/2 + 250, height, 50);
+  
+        int numTreesV1 = 25;
+   
+  for (int i = 0; i < numTreesV1; i++){
+    float x = -110;
+    float y = -135 + 340 * i;
+    image(tree, x, y, 400, 400);   
+  }
+  
+    int numTreesH = 6;
+   
+  for (int i = 0; i < numTreesH; i++){
+    float x = -110 + 200 * i;
+    float y = -135;
+    image(tree, x, y, 400, 400);   
+  }
+  
+   int numTreesV2 = 25;
+   
+  for (int i = 0; i < numTreesV2; i++){
+    float x = 1090;
+    float y = -135 + 340 * i;
+    image(tree, x, y, 400, 400);   
+  }
+  
+  fill(0);
+  textSize(45);
+  textAlign(CENTER);
+  text("Gavin And Lincoln's Tree Adventure", width/2, height/2 + 25);
+  textSize(30);
+  text("press [SPACE] to start", width/2, height/2 + 150);
+  if(key == ' '){
+    screenState = 1;
+  }
+}
