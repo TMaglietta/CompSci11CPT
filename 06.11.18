@@ -8,10 +8,12 @@ PImage papyrus;
 PImage sans;
 PImage tree = new PImage();
 
-int dialogueT = 1;
 int frame;
 
 int screenState;
+
+int textVar1 = 0;
+int textVar2 = 0;
 
 void setup() {
   fullScreen();  
@@ -32,6 +34,8 @@ void draw() {
     mapScreen();
   }else if (screenState == 2){
     dialogueScreen();
+  }else if (screenState == 4){
+    winScreen();
   }
 } 
 
@@ -44,12 +48,6 @@ void keyPressed() {
     sansLoc.x -= speed; 
   } else if (key == 'd' || key == 'D') {
     sansLoc.x += speed; 
-  }
-}
-
-void keyReleased() {
-  if (key == 't' || key == 'T') {
-    dialogueT = 0;
   }
 }
 
@@ -135,21 +133,39 @@ void dialogueScreen(){
     fill(255);
     
     textSize(height/30);
-    text("press t to speak", 10, 30); 
+    text("click to progress dialogue", 10, 30);
+    textSize(25);
+    if(textVar1 == 1){
+      text("Hello!", width/2 - 500, height/2); 
+      }else if(textVar1 == 3){
+        text("My name is Lincoln.", width/2 - 500, height/2); 
+      }else if(textVar1 == 6){
+        text("Well, you see, I'm currently", width/2 - 500, height/2); 
+        text("on an adventure to find the", width/2 - 500, height/2 + 50); 
+        text("magical red oak tree of the Harb tribe,", width/2 - 500, height/2 + 100);
+      }else if(textVar1 == 5){
+        text("...and I believe I have found the place!", width/2 - 500, height/2);
+      }
+    if(textVar2 == 0){
+    text("Hey!", width/2 + 175, height/2 - 100);
+    }else if(textVar2 == 2) {
+     text("Welcome to the town of", width/2 + 175, height/2 - 100);
+     text("Harb! My name is Gavin.", width/2 + 175, height/2 - 50);
+    }else if(textVar2 == 4) {
+     text("What brings you here Lincoln?", width/2 + 175, height/2 - 100);
+     text("We don't get too many visitors", width/2 + 175, height/2 - 50);
+     text("around these parts.", width/2 + 175, height/2);
+    }
       
-    textSize(height/20);
-    if (key == 't'||key =='T'){
-      text("hello!", width/2 - 500, height/2);
-    } if(frameCount == frame + 120){
-        frame = frameCount;
-        fill(0);
-        rect(width/2, 0, width/2, height);
-        fill(255);
-        text("hey", width/2 + 175, height/2 - 100);
-      } 
+      
     //characters
   image(papyrus, width - 250, height/2, height/3, height/3); 
   image(sans, 0, height/2 + 40, height/3 - 50, height/3 -50);
+}
+
+void mousePressed() {
+  textVar1++;
+  textVar2++;
 }
 
 void menuScreen() {
@@ -189,8 +205,20 @@ void menuScreen() {
   textSize(30);
   text("press [SPACE] to start", width/2, height/2 + 150);
   if(key == ' '){
-    screenState = 1;
+    screenState = 4;
   }
 }
-
   
+  void winScreen() {
+  fill(255);
+  image(sans, sansLoc.x, sansLoc.y, 75, 75);
+  textSize(325);
+  textAlign(CENTER);
+  text("WINNER", width/2, height/2 + 25);
+  textSize(30);
+  text("press [e] to start", width/2, height/2 + 150);
+  if(key == 'e'){
+    screenState = 1;
+  }  
+  
+}
